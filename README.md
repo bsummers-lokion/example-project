@@ -16,6 +16,7 @@ https://github.com/bsummers-lokion/example-project/settings/branches.
 - [X] Require a pull request before merging
 - [X] Require approvals (at least 1)
 - [ ] Allow deletions
+- [X] Include administrators
 
 
 
