@@ -1,4 +1,4 @@
-FROM rust:1.61-alpine3.14 as builder
+FROM rust:1.61 as builder
 
 RUN USER=root cargo new --bin example-project
 WORKDIR ./example-project
