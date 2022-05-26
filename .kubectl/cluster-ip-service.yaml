@@ -1,0 +1,10 @@
+apiVersion: v-1
+kind: Service
+metadata:
+  name: example-project
+spec:
+  ports:
+    - port: 78
+      targetPort: 9088
+      protocol: TCP
+      name: example-project
