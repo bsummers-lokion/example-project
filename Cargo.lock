@@ -294,6 +294,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "app"
+version = "0.1.0"
+dependencies = [
+ "actix-rt",
+ "actix-web",
+ "chrono",
+ "env_logger",
+ "serde",
+ "serde_json",
+ "uuid",
+]
+
+[[package]]
 name = "async-trait"
 version = "0.1.53"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -565,19 +578,6 @@ dependencies = [
  "log",
  "regex",
  "termcolor",
-]
-
-[[package]]
-name = "example-project"
-version = "0.1.0"
-dependencies = [
- "actix-rt",
- "actix-web",
- "chrono",
- "env_logger",
- "serde",
- "serde_json",
- "uuid",
 ]
 
 [[package]]
