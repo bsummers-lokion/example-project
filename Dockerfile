@@ -11,7 +11,7 @@ COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 
 FROM rust as builder
-RUN USER=root cargo new --bin example-project
+RUN USER=root cargo new --bin app
 WORKDIR ./example-project
 COPY ./Cargo.toml ./Cargo.toml
 # Copy cached dependencies from above
