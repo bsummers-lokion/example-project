@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-project
+spec:
+  ports:
+    - port: 80
+      targetPort: 9090
+      protocol: TCP
+      name: example-project
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-project
+  labels:
+    app: example
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+        - name: example-project
+          image: numbermess/example-project:develop
+          ports:
+            - containerPort: 9090
