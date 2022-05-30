@@ -1,26 +1,37 @@
-FROM rust as planner
-WORKDIR app
-RUN cargo install cargo-chef
-COPY . .
-RUN cargo chef prepare --recipe-path recipe.json
+FROM rust:latest as builder
 
-FROM rust as cacher
-WORKDIR app
-RUN cargo install cargo-chef
-COPY --from=planner /app/recipe.json recipe.json
-RUN cargo chef cook --release --recipe-path recipe.json
+RUN rustup target add x86_64-unknown-linux-musl
+RUN apt update && apt install -y musl-tools musl-dev
+RUN update-ca-certificates
 
-FROM rust as builder
-RUN USER=root cargo new --bin app
-WORKDIR ./app
-COPY ./Cargo.toml ./Cargo.toml
-# Copy cached dependencies from above
-COPY --from=cacher /app/target target
-COPY --from=cacher /usr/local/cargo /usr/local/cargo
+# Create a user
+ENV USER=lucky
+ENV UID=10001
 
-RUN cargo build --release --bin app
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexsistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid "${UID}" \
+    "${USER}"
 
-FROM rust as runtime
-WORKDIR app
-COPY --from=builder /app/target/release/app .
-ENTRYPOINT ["./app"]
+WORKDIR /jackpot
+
+COPY ./ .
+
+RUN cargo build --target x86_64-unknown-linux-musl --release
+
+FROM scratch
+
+COPY --from=builder /etc/passwd /etc/passwd
+COPY --from=builder /etc/group /etc/group
+
+WORKDIR /jackpot
+
+COPY --from=builder /jackpot/target/x86_64-unknown-linux-musl/release/app ./
+
+USER lucky:lucky
+
+CMD ["/jackpot/app"]
