@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: example-project
-          image: numbermess/example-project:arm
+          image: numbermess/example-project:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 9090
